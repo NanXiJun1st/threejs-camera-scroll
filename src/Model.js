@@ -11,25 +11,25 @@ const color = new THREE.Color()
 
 export default function Model({ scroll, ...props }) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF("/model.glb")
+  const { nodes, materials, animations } = useGLTF('/Test01.glb')
   const { actions } = useAnimations(animations, group)
   const [hovered, set] = useState()
   const extras = { receiveShadow: true, castShadow: true, "material-envMapIntensity": 0.2 }
-  useEffect(() => void (actions["CameraAction.005"].play().paused = true), [])
-  useEffect(() => {
-    if (hovered) group.current.getObjectByName(hovered).material.color.set("white")
-    document.body.style.cursor = hovered ? "pointer" : "auto"
-  }, [hovered])
+  useEffect(() => void (actions["Empty.001Action"].play().paused = false), [])
+  // useEffect(() => {
+  //   if (hovered) group.current.getObjectByName(hovered).material.color.set("white")
+  //   document.body.style.cursor = hovered ? "pointer" : "auto"
+  // }, [hovered])
   useFrame((state) => {
-    actions["CameraAction.005"].time = THREE.MathUtils.lerp(actions["CameraAction.005"].time, actions["CameraAction.005"].getClip().duration * scroll.current, 0.05)
-    group.current.children[0].children.forEach((child, index) => {
-      child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020").convertSRGBToLinear(), hovered ? 0.1 : 0.05)
-      const et = state.clock.elapsedTime
-      child.position.y = Math.sin((et + index * 2000) / 2) * 1
-      child.rotation.x = Math.sin((et + index * 2000) / 3) / 10
-      child.rotation.y = Math.cos((et + index * 2000) / 2) / 10
-      child.rotation.z = Math.sin((et + index * 2000) / 3) / 10
-    })
+    actions["Empty.001Action"].time = THREE.MathUtils.lerp(actions["Empty.001Action"].time, actions["Empty.001Action"].getClip().duration * scroll.current, 0.05)
+    // group.current.children[0].children.forEach((child, index) => {
+    //   child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020").convertSRGBToLinear(), hovered ? 0.1 : 0.05)
+      // const et = state.clock.elapsedTime
+      // child.position.y = Math.sin((et + index * 2000) / 2) * 1
+      // child.rotation.x = Math.sin((et + index * 2000) / 3) / 10
+      // child.rotation.y = Math.cos((et + index * 2000) / 2) / 10
+      // child.rotation.z = Math.sin((et + index * 2000) / 3) / 10
+    // })
   })
 
   return (
@@ -37,18 +37,16 @@ export default function Model({ scroll, ...props }) {
       <group
         onPointerOver={(e) => (e.stopPropagation(), set(e.object.name))}
         onPointerOut={(e) => (e.stopPropagation(), set(null))}
-        position={[0.06, 4.04, 0.35]}
-        scale={[0.25, 0.25, 0.25]}>
-        <mesh name="Headphones" geometry={nodes.Headphones.geometry} material={materials.M_Headphone} {...extras} />
-        <mesh name="Notebook" geometry={nodes.Notebook.geometry} material={materials.M_Notebook} {...extras} />
-        <mesh name="Rocket003" geometry={nodes.Rocket003.geometry} material={materials.M_Rocket} {...extras} />
-        <mesh name="Roundcube001" geometry={nodes.Roundcube001.geometry} material={materials.M_Roundcube} {...extras} />
-        <mesh name="Table" geometry={nodes.Table.geometry} material={materials.M_Table} {...extras} />
-        <mesh name="VR_Headset" geometry={nodes.VR_Headset.geometry} material={materials.M_Headset} {...extras} />
-        <mesh name="Zeppelin" geometry={nodes.Zeppelin.geometry} material={materials.M_Zeppelin} v />
+        // position={[0.06, 4.04, 0.35]}
+        // scale={[0.25, 0.25, 0.25]}
+        >
+          <mesh name="Cone" geometry={nodes.Cone.geometry} material={materials['Material.001']} />
+          <mesh name="Cube" geometry={nodes.Cube.geometry} material={materials['Material.002']} />
+          <mesh name="Sphere" geometry={nodes.Sphere.geometry} material={materials['Material.003']} />
+          <mesh name="Suzanne" geometry={nodes.Suzanne.geometry} material={materials['Material.004']} />
       </group>
-      <group name="Camera" position={[-1.78, 2.04, 23.58]} rotation={[1.62, 0.01, 0.11]}>
-        <PerspectiveCamera makeDefault far={100} near={0.1} fov={28} rotation={[-Math.PI / 2, 0, 0]}>
+      <group name="Camera">
+      <PerspectiveCamera name="CameraMain" makeDefault far={1000} near={0.1} fov={40} rotation={[2.66, 1.5, -2.64]} >
           <directionalLight
             castShadow
             position={[10, 20, 15]}
@@ -61,10 +59,10 @@ export default function Model({ scroll, ...props }) {
             intensity={2}
             shadow-bias={-0.0001}
           />
-        </PerspectiveCamera>
+          </PerspectiveCamera>
       </group>
     </group>
   )
 }
 
-useGLTF.preload("/model.glb")
+useGLTF.preload('/Test01.glb')

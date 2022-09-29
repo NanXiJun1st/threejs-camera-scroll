@@ -17,7 +17,7 @@ export default function App() {
         <ambientLight intensity={1} />
         <Suspense fallback={null}>
           <Model scroll={scroll} />
-          <Environment preset="city" />
+          <Environment preset="sunset" />
         </Suspense>
       </Canvas>
       <Overlay ref={overlay} caption={caption} scroll={scroll} />
