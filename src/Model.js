@@ -16,20 +16,22 @@ export default function Model({ scroll, ...props }) {
   const [hovered, set] = useState()
   const extras = { receiveShadow: true, castShadow: true, "material-envMapIntensity": 0.2 }
   useEffect(() => void (actions["Empty.001Action"].play().paused = false), [])
-  // useEffect(() => {
-  //   if (hovered) group.current.getObjectByName(hovered).material.color.set("white")
-  //   document.body.style.cursor = hovered ? "pointer" : "auto"
-  // }, [hovered])
+  useEffect(() => {
+    // if (hovered) group.current.getObjectByName(hovered).material.color.set("white")
+    if (hovered) group.current.getObjectByName(hovered).material.color.set("white")
+
+    document.body.style.cursor = hovered ? "pointer" : "auto"
+  }, [hovered])
   useFrame((state) => {
     actions["Empty.001Action"].time = THREE.MathUtils.lerp(actions["Empty.001Action"].time, actions["Empty.001Action"].getClip().duration * scroll.current, 0.05)
-    // group.current.children[0].children.forEach((child, index) => {
-    //   child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020").convertSRGBToLinear(), hovered ? 0.1 : 0.05)
-      // const et = state.clock.elapsedTime
-      // child.position.y = Math.sin((et + index * 2000) / 2) * 1
-      // child.rotation.x = Math.sin((et + index * 2000) / 3) / 10
-      // child.rotation.y = Math.cos((et + index * 2000) / 2) / 10
-      // child.rotation.z = Math.sin((et + index * 2000) / 3) / 10
-    // })
+    group.current.children[0].children.forEach((child, index) => {
+      child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020").convertSRGBToLinear(), hovered ? 0.1 : 0.05)
+      const et = state.clock.elapsedTime
+      child.position.y = Math.sin((et + index * 2000) / 2) * 1
+      child.rotation.x = Math.sin((et + index * 2000) / 3) / 10
+      child.rotation.y = Math.cos((et + index * 2000) / 2) / 10
+      child.rotation.z = Math.sin((et + index * 2000) / 3) / 10
+    })
   })
 
   return (
